@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no, address=no, email=no">
+  <title>Il Budget delle Vacanze — Maleducati Finanziari</title>
+  <meta name="description" content="Goditi la vacanza senza ansie e torna a casa senza brutte sorprese. Il kit completo per pianificare le tue spese e rispettarle.">
+  <meta property="og:title" content="Il Budget delle Vacanze — Maleducati Finanziari">
+  <meta property="og:description" content="Goditi la vacanza senza ansie e torna a casa senza brutte sorprese.">
+  <meta property="og:type" content="website">
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1484404588815255');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1484404588815255&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- Fine Meta Pixel Code -->
+
+  <!-- Google Fonts: Antonio + DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- GSAP 3.12.5 + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ============================================================
+       RESET + BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --mf-navy:       #003a64;
+      --mf-blue:       #54a2d2;
+      --mf-light:      #a9cee8;
+      --mf-white:      #ffffff;
+      --mf-font-title: 'Antonio', sans-serif;
+      --mf-font-body:  'DM Sans', sans-serif;
+    }
+
+    body {
+      font-family: var(--mf-font-body);
+      color: var(--mf-navy);
+      background: var(--mf-white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mf-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    a { text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ============================================================
+       URGENCY BAR FISSA
+       ============================================================ */
+    #mf-urgency-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      background: var(--mf-navy);
+      color: var(--mf-white);
+      text-align: center;
+      padding: 10px 20px;
+      font-family: var(--mf-font-body);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(84, 162, 210, 0.3);
+    }
+    #mf-urgency-cta {
+      color: var(--mf-light);
+      font-weight: 600;
+      border-bottom: 1px solid rgba(169, 206, 232, 0.4);
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    #mf-urgency-cta:hover { color: var(--mf-white); border-bottom-color: var(--mf-white); }
+
+    /* ============================================================
+       COUNTDOWN
+       ============================================================ */
+    .mf-countdown {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mf-font-title);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .mf-cd-unit {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+    .mf-cd-unit small {
+      font-size: 9px;
+      font-family: var(--mf-font-body);
+      margin-top: 3px;
+      font-weight: 400;
+      opacity: 0.65;
+      text-transform: uppercase;
+    }
+    .mf-cd-sep { opacity: 0.4; font-weight: 700; margin-top: -4px; }
+
+    /* ============================================================
+       ANIMAZIONI SCROLL
+       ============================================================ */
+    .mf-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .mf-animate.is-visible { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       BOTTONI CTA
+       ============================================================ */
+    .mf-btn {
+      display: inline-block;
+      background: #0ac36a;
+      color: var(--mf-white);
+      font-family: var(--mf-font-body);
+      font-size: 16px;
+      font-weight: 600;
+      padding: 16px 36px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      line-height: 1.2;
+    }
+    .mf-btn:hover {
+      background: #08a85a;
+      transform: scale(1.02);
+      box-shadow: 0 6px 24px rgba(84, 162, 210, 0.35);
+      color: var(--mf-white);
+    }
+    .mf-btn-large { font-size: 18px; padding: 20px 52px; }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .mf-hero {
+      background:
+        radial-gradient(ellipse at 15% 25%, rgba(84, 162, 210, 0.15) 0%, transparent 55%),
+        var(--mf-navy);
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 0 80px;
+    }
+    .mf-hero-label {
+      font-family: var(--mf-font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--mf-blue);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .mf-hero h1 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(38px, 5.5vw, 66px);
+      font-weight: 700;
+      color: var(--mf-white);
+      line-height: 1.08;
+      letter-spacing: -0.5px;
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+    .mf-hero p {
+      font-family: var(--mf-font-body);
+      font-size: 18px;
+      color: var(--mf-light);
+      max-width: 580px;
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+    .mf-hero-sub {
+      display: block;
+      font-family: var(--mf-font-body);
+      font-size: 13px;
+      color: rgba(169, 206, 232, 0.6);
+      margin-top: 14px;
+    }
+
+    /* ============================================================
+       PROBLEMA
+       ============================================================ */
+    .mf-problema {
+      background: var(--mf-white);
+      padding: 80px 0;
+    }
+    .mf-problema h2 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 700;
+      color: var(--mf-navy);
+      line-height: 1.1;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+    .mf-problema p {
+      font-family: var(--mf-font-body);
+      font-size: 17px;
+      color: #1a3a52;
+      line-height: 1.75;
+      max-width: 660px;
+      margin-bottom: 16px;
+    }
+    .mf-highlight {
+      font-family: var(--mf-font-title);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      color: var(--mf-navy);
+      margin-top: 40px;
+      line-height: 1.25;
+      max-width: 660px;
+    }
+
+    /* ============================================================
+       COME FUNZIONA — 3 step
+       ============================================================ */
+    .mf-come-funziona {
+      background: var(--mf-light);
+      padding: 80px 0;
+    }
+    .mf-section-label {
+      font-family: var(--mf-font-body);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mf-blue);
+      margin-bottom: 12px;
+    }
+    .mf-come-funziona h2 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      color: var(--mf-navy);
+      margin-bottom: 48px;
+    }
+    .mf-step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .mf-step {
+      background: var(--mf-white);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 2px 16px rgba(0,58,100,0.07);
+    }
+    .mf-step-num {
+      font-family: var(--mf-font-title);
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--mf-blue);
+      line-height: 1;
+      margin-bottom: 12px;
+      opacity: 0.4;
+    }
+    .mf-step h3 {
+      font-family: var(--mf-font-title);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--mf-navy);
+      margin-bottom: 10px;
+    }
+    .mf-step p {
+      font-family: var(--mf-font-body);
+      font-size: 15px;
+      color: #3a5a72;
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       COSA RICEVI
+       ============================================================ */
+    .mf-contenuto {
+      background: var(--mf-white);
+      padding: 80px 0;
+    }
+    .mf-contenuto h2 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      color: var(--mf-navy);
+      margin-bottom: 40px;
+    }
+    .mf-items-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 720px;
+    }
+    .mf-items-list li {
+      font-family: var(--mf-font-body);
+      font-size: 17px;
+      color: var(--mf-navy);
+      padding: 18px 0 18px 36px;
+      position: relative;
+      border-bottom: 1px solid rgba(169, 206, 232, 0.4);
+      line-height: 1.5;
+    }
+    .mf-items-list li:last-child { border-bottom: none; }
+    .mf-items-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--mf-blue);
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .mf-items-list li strong { display: block; font-weight: 600; }
+    .mf-items-list li span {
+      font-size: 14px;
+      color: #5a7a90;
+    }
+
+    /* ============================================================
+       RECENSIONE SINGOLA
+       ============================================================ */
+    .mf-recensione-singola {
+      background:
+        radial-gradient(ellipse at 85% 20%, rgba(84, 162, 210, 0.13) 0%, transparent 50%),
+        var(--mf-navy);
+      padding: 80px 0;
+    }
+    .mf-quote-big {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .mf-quote-big blockquote {
+      font-family: var(--mf-font-body);
+      font-size: 19px;
+      font-style: italic;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .mf-quote-big cite {
+      font-family: var(--mf-font-body);
+      font-size: 14px;
+      color: var(--mf-light);
+      font-style: normal;
+      font-weight: 600;
+    }
+    .mf-quote-stars {
+      color: #f5a623;
+      font-size: 18px;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* ============================================================
+       PRICING
+       ============================================================ */
+    .mf-pricing {
+      background: var(--mf-white);
+      padding: 80px 0;
+    }
+    .mf-pricing-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .mf-pricing-header h2 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      color: var(--mf-navy);
+      margin-bottom: 8px;
+    }
+
+    .mf-card-unica {
+      max-width: 520px;
+      margin: 0 auto;
+      background: var(--mf-navy);
+      border-radius: 20px;
+      padding: 48px 44px;
+      box-shadow: 0 20px 60px rgba(0,58,100,0.25);
+      text-align: center;
+    }
+    .mf-card-unica .mf-card-label {
+      font-family: var(--mf-font-body);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--mf-light);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .mf-card-unica h3 {
+      font-family: var(--mf-font-title);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--mf-white);
+      margin-bottom: 28px;
+      line-height: 1.2;
+    }
+    .mf-card-unica ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px 0;
+      text-align: left;
+    }
+    .mf-card-unica ul li {
+      font-family: var(--mf-font-body);
+      font-size: 15px;
+      color: rgba(255,255,255,0.88);
+      padding: 9px 0 9px 24px;
+      position: relative;
+      border-bottom: 1px solid rgba(169, 206, 232, 0.15);
+      line-height: 1.45;
+    }
+    .mf-card-unica ul li:last-child { border-bottom: none; }
+    .mf-card-unica ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--mf-light);
+      font-weight: 700;
+    }
+    .mf-price-old {
+      font-family: var(--mf-font-body);
+      font-size: 18px;
+      color: rgba(169, 206, 232, 0.45);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+    .mf-price {
+      font-family: var(--mf-font-title);
+      font-size: 72px;
+      font-weight: 700;
+      color: var(--mf-white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .mf-price-note {
+      font-family: var(--mf-font-body);
+      font-size: 13px;
+      color: rgba(169, 206, 232, 0.65);
+      margin-bottom: 32px;
+      line-height: 1.4;
+    }
+    .mf-card-btn {
+      display: block;
+      background: #0ac36a;
+      color: var(--mf-white);
+      font-family: var(--mf-font-body);
+      font-size: 17px;
+      font-weight: 600;
+      text-align: center;
+      padding: 18px 24px;
+      border-radius: 8px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .mf-card-btn:hover {
+      background: #08a85a;
+      transform: scale(1.02);
+      color: var(--mf-white);
+    }
+
+    /* ============================================================
+       URGENZA FINALE
+       ============================================================ */
+    .mf-urgenza-finale {
+      background:
+        radial-gradient(ellipse at 72% 18%, rgba(84, 162, 210, 0.16) 0%, transparent 52%),
+        var(--mf-navy);
+      padding: 90px 0;
+      text-align: center;
+    }
+    .mf-urgenza-finale h2 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(28px, 4.5vw, 52px);
+      font-weight: 700;
+      color: var(--mf-white);
+      line-height: 1.08;
+      max-width: 640px;
+      margin: 0 auto 16px;
+    }
+    .mf-urgenza-finale p {
+      font-family: var(--mf-font-body);
+      font-size: 16px;
+      color: var(--mf-light);
+      max-width: 500px;
+      margin: 0 auto 16px;
+      line-height: 1.65;
+    }
+    .mf-countdown-finale {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mf-font-title);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--mf-white);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px auto 32px;
+    }
+    .mf-countdown-finale .mf-cd-unit {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 10px 16px;
+      min-width: 64px;
+      gap: 4px;
+    }
+    .mf-countdown-finale .mf-cd-unit small { font-size: 11px; opacity: 0.6; }
+    .mf-countdown-finale .mf-cd-sep { font-size: 28px; opacity: 0.3; margin-top: 4px; }
+
+    /* ============================================================
+       FAQ
+       ============================================================ */
+    .mf-faq {
+      background: var(--mf-white);
+      padding: 80px 0;
+    }
+    .mf-faq h2 {
+      font-family: var(--mf-font-title);
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 700;
+      color: var(--mf-navy);
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .mf-faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .mf-faq-item {
+      border-bottom: 1px solid var(--mf-light);
+    }
+    .mf-faq-item:first-child { border-top: 1px solid var(--mf-light); }
+    .mf-faq-item summary {
+      font-family: var(--mf-font-body);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--mf-navy);
+      padding: 22px 40px 22px 0;
+      cursor: pointer;
+      list-style: none;
+      position: relative;
+      line-height: 1.4;
+    }
+    .mf-faq-item summary::-webkit-details-marker { display: none; }
+    .mf-faq-item summary::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--mf-blue);
+      transition: transform 0.25s ease;
+      line-height: 1;
+    }
+    .mf-faq-item[open] summary::after { content: '−'; }
+    .mf-faq-item summary:hover { color: var(--mf-blue); }
+    .mf-faq-answer {
+      font-family: var(--mf-font-body);
+      font-size: 16px;
+      color: #3a5a72;
+      line-height: 1.75;
+      padding: 0 40px 24px 0;
+      max-width: 640px;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .mf-footer {
+      background: var(--mf-navy);
+      border-top: 1px solid rgba(169, 206, 232, 0.12);
+      padding: 32px 0;
+      text-align: center;
+    }
+    .mf-footer-brand {
+      font-family: var(--mf-font-title);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--mf-white);
+      margin-bottom: 8px;
+    }
+    .mf-footer p {
+      font-family: var(--mf-font-body);
+      font-size: 13px;
+      color: rgba(169, 206, 232, 0.6);
+      line-height: 1.8;
+    }
+    .mf-footer a { color: rgba(169, 206, 232, 0.6); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      .mf-container { padding: 0 20px; }
+      .mf-hero { min-height: auto; padding: 80px 0 60px; }
+      .mf-hero h1 { font-size: 36px; }
+      .mf-hero p { font-size: 16px; }
+      .mf-step-grid { grid-template-columns: 1fr; gap: 20px; }
+      .mf-problema, .mf-come-funziona, .mf-contenuto,
+      .mf-recensione-singola, .mf-pricing, .mf-urgenza-finale, .mf-faq { padding: 60px 0; }
+      .mf-card-unica { padding: 36px 28px; }
+      .mf-price { font-size: 56px; }
+      .mf-countdown-finale { font-size: 26px; }
+      .mf-countdown-finale .mf-cd-unit { min-width: 52px; padding: 8px 12px; }
+      #mf-urgency-bar { font-size: 11px; padding: 8px 12px; gap: 6px; }
+    }
+    @media (max-width: 480px) {
+      .mf-btn-large { padding: 16px 24px; font-size: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- URGENCY BAR FISSA -->
+  <div id="mf-urgency-bar">
+    <span>⏳ Offerta disponibile fino a martedì 16 giugno alle 23:59 &mdash;</span>
+    <div class="mf-countdown" id="cd-bar" aria-live="polite">
+      <span class="mf-cd-unit"><span id="cb-d">--</span><small>giorni</small></span>
+      <span class="mf-cd-sep">:</span>
+      <span class="mf-cd-unit"><span id="cb-h">--</span><small>ore</small></span>
+      <span class="mf-cd-sep">:</span>
+      <span class="mf-cd-unit"><span id="cb-m">--</span><small>min</small></span>
+      <span class="mf-cd-sep">:</span>
+      <span class="mf-cd-unit"><span id="cb-s">--</span><small>sec</small></span>
+    </div>
+    <a href="#mf-pricing" id="mf-urgency-cta">Acquista subito &rarr;</a>
+  </div>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="mf-hero">
+    <div class="mf-container">
+      <span class="mf-hero-label">Maleducati Finanziari</span>
+      <h1>Goditi le vacanze e torna a casa senza ansia per i soldi</h1>
+      <p>Il metodo completo per risparmiare sulle vacanze e godertele fino in fondo, senza dover rinunciare alle cose che ti piacciono.</p>
+      <a href="#mf-pricing" class="mf-btn mf-btn-large">
+        Voglio il Budget delle Vacanze &rarr;
+      </a>
+      <span class="mf-hero-sub">Solo 27&euro; &mdash; offerta valida fino al 16 giugno alle 23:59</span>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROBLEMA
+       ============================================================ -->
+  <section class="mf-problema mf-animate">
+    <div class="mf-container">
+      <h2>Hai presente quella brutta sensazione?</h2>
+      <p>Torni dalle vacanze e ti viene l'ansia per quello che ti aspetta: le spese della carta di credito che ti arrivano tra capo e collo. Il conto corrente semi vuoto e quella brutta sensazione che le spese fatte in vacanza ti abbiano seguito fino a casa.</p>
+      <p>Intanto settembre è già lì, con tutte le sue spese e l'ansia da rientro ti fa sentire come se le vacanze non siano mai esistite.</p>
+      <p>E ogni volta ti dici: <em>&ldquo;Il prossimo anno faccio più attenzione con i soldi.&rdquo;</em></p>
+      <p class="mf-highlight">Ma non è una questione di forza di volontà.<br>Quello che ti manca è un metodo.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COME FUNZIONA — 3 STEP
+       ============================================================ -->
+  <section class="mf-come-funziona mf-animate">
+    <div class="mf-container">
+      <div class="mf-section-label">Come funziona</div>
+      <h2>Il tuo piano d'azione in 3 mosse</h2>
+      <div class="mf-step-grid">
+        <div class="mf-step">
+          <div class="mf-step-num">01</div>
+          <h3>Pianifica prima di partire</h3>
+          <p>Con il nostro file, che puoi usare sia da pc che smartphone, crei il budget delle vacanze, cioè il tuo piano d'azione e pianifichi tutte le spese: trasporti, pernottamenti, cibo e attività. E includi anche una somma per gli acquisti che vuoi fare sul momento, perché in vacanza ci vuole anche quello.</p>
+        </div>
+        <div class="mf-step">
+          <div class="mf-step-num">02</div>
+          <h3>Il check di metà vacanza</h3>
+          <p>A metà vacanza, sempre con il nostro file, in pochi minuti fai il punto della situazione e verifichi se stai rispettando il piano, così se devi correggere il tiro, sei ancora in tempo.</p>
+        </div>
+        <div class="mf-step">
+          <div class="mf-step-num">03</div>
+          <h3>Torna a casa sereno</h3>
+          <p>Al rientro niente spese impreviste che ti seguono per settimane. Ed è una sensazione unica, perché vuol dire ripartire in piena tranquillità, senza l'ansia di non riuscire a pagare tutte le spese di settembre.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COSA RICEVI
+       ============================================================ -->
+  <section class="mf-contenuto mf-animate">
+    <div class="mf-container">
+      <h2>Cosa ottieni</h2>
+      <ul class="mf-items-list">
+        <li>
+          <strong>File Budget Vacanze — versione con carta di credito</strong>
+          <span>Progetta anche le spese sulla carta, pianifica il saldo che arriverà e non farti cogliere alla sprovvista. Il file resta tuo per sempre.</span>
+        </li>
+        <li>
+          <strong>File Budget Vacanze — versione senza carta di credito</strong>
+          <span>Tutto il necessario per chi preferisce pagare in contanti o con carta di debito (bancomat). Il file resta tuo per sempre.</span>
+        </li>
+        <li style="padding-top:24px;">
+          <strong>3 videolezioni con le istruzioni passo passo per creare il tuo piano d'azione</strong>
+          <span>Guardi i video una volta sola e poi sai esattamente come usare il file, ogni anno, per ogni vacanza.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RECENSIONE
+       ============================================================ -->
+  <section class="mf-recensione-singola mf-animate">
+    <div class="mf-container">
+      <div class="mf-quote-big">
+        <span class="mf-quote-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        <blockquote>
+          &ldquo;Per anni ho vissuto il paradosso di viaggiare e tornare con il conto prosciugato. Quest&rsquo;anno, grazie al file di budget per le vacanze di Dora e Davide, tutto &egrave; cambiato: ho creato un piano dettagliato e, per la prima volta, non ho sforato di un centesimo.&rdquo;
+        </blockquote>
+        <cite>Chiara &mdash; 45 anni, lavoratrice dipendente</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PRICING
+       ============================================================ -->
+  <section class="mf-pricing mf-animate" id="mf-pricing">
+    <div class="mf-container">
+      <div class="mf-pricing-header">
+        <h2>Il Budget delle Vacanze</h2>
+        <p style="font-family:var(--mf-font-body);font-size:15px;color:#5a7a90;">3 videolezioni + 2 file pronti all&rsquo;uso</p>
+      </div>
+
+      <div class="mf-card-unica">
+        <span class="mf-card-label">Accesso immediato</span>
+        <h3>Il Budget delle Vacanze</h3>
+        <ul>
+          <li>3 videolezioni passo passo</li>
+          <li>File Budget Vacanze (versione con carta di credito) <em style="color:rgba(169,206,232,0.65);font-style:normal;font-size:13px;">— Tuo per sempre</em></li>
+          <li>File Budget Vacanze (versione senza carta di credito) <em style="color:rgba(169,206,232,0.65);font-style:normal;font-size:13px;">— Tuo per sempre</em></li>
+          <li>Accesso alle videolezioni per 12 mesi</li>
+        </ul>
+        <div class="mf-price-old">47&euro;</div>
+        <div class="mf-price">27&euro;</div>
+        <div class="mf-price-note">Offerta valida fino al 16 giugno alle 23:59</div>
+        <a href="LINK_ACQUISTO" class="mf-card-btn">
+          S&igrave;, voglio il Budget delle Vacanze &rarr;
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       URGENZA FINALE CON COUNTDOWN
+       ============================================================ -->
+  <section class="mf-urgenza-finale">
+    <div class="mf-container">
+      <h2>Quest&rsquo;estate puoi fare la differenza.</h2>
+      <p>L&rsquo;offerta scade martedì 16 giugno alle 23:59. Dopo il prezzo torna a 47&euro;.</p>
+
+      <div class="mf-countdown-finale" id="cd-main" aria-live="polite">
+        <span class="mf-cd-unit"><span id="cm-d">--</span><small>giorni</small></span>
+        <span class="mf-cd-sep">:</span>
+        <span class="mf-cd-unit"><span id="cm-h">--</span><small>ore</small></span>
+        <span class="mf-cd-sep">:</span>
+        <span class="mf-cd-unit"><span id="cm-m">--</span><small>min</small></span>
+        <span class="mf-cd-sep">:</span>
+        <span class="mf-cd-unit"><span id="cm-s">--</span><small>sec</small></span>
+      </div>
+
+      <a href="#mf-pricing" class="mf-btn mf-btn-large">
+        Lo voglio subito &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ
+       ============================================================ -->
+  <section class="mf-faq mf-animate">
+    <div class="mf-container">
+      <h2>Domande frequenti</h2>
+      <div class="mf-faq-list">
+
+        <details class="mf-faq-item">
+          <summary>Quando ricevo i materiali?</summary>
+          <p class="mf-faq-answer">Immediatamente dopo l'acquisto ricevi un'email con le istruzioni per accedere alle videolezioni e scaricare i file.</p>
+        </details>
+
+        <details class="mf-faq-item">
+          <summary>Funziona anche se ho già prenotato?</summary>
+          <p class="mf-faq-answer">Assolutamente sì. Puoi programmare tutte le spese secondarie che sono proprio quelle che non calcoli mai e poi ti fregano.</p>
+        </details>
+
+        <details class="mf-faq-item">
+          <summary>È utile anche se devo ancora prenotare?</summary>
+          <p class="mf-faq-answer">Assolutamente sì. Ti permette di capire quanto puoi permetterti di spendere e sulla base di questo decidere dove andare.</p>
+        </details>
+
+        <details class="mf-faq-item">
+          <summary>Funziona anche se parto tra pochi giorni?</summary>
+          <p class="mf-faq-answer">Sì. Le videolezioni sono brevi e i file sono pronti all'uso. In meno di un'ora puoi avere il tuo piano delle vacanze già impostato.</p>
+        </details>
+
+        <details class="mf-faq-item">
+          <summary>Uso la carta di credito e ho sempre paura di sforare. Mi aiuta?</summary>
+          <p class="mf-faq-answer">Esattamente per questo c'è una versione del file dedicata a chi usa la carta di credito. Ti permette di pianificare anche quelle spese in anticipo, così non ti colgono alla sprovvista quando arriva l'addebito.</p>
+        </details>
+
+        <details class="mf-faq-item">
+          <summary>Come si paga?</summary>
+          <p class="mf-faq-answer">Puoi pagare con carta di debito, carta di credito o carta prepagata.</p>
+        </details>
+
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="mf-footer">
+    <div class="mf-container">
+      <p class="mf-footer-brand">Maleducati Finanziari</p>
+      <p>P. IVA: 13069380015</p>
+      <p>Via Cardinale Maurilio Fossati 20 &mdash; 10141 Torino (TO)</p>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT: Countdown + GSAP
+       ============================================================ -->
+  <script>
+    /* --- Countdown --- */
+    var deadline = new Date('2026-06-16T23:59:00');
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateCountdown() {
+      var now  = new Date();
+      var diff = deadline - now;
+
+      if (diff <= 0) {
+        ['cb-d','cb-h','cb-m','cb-s','cm-d','cm-h','cm-m','cm-s']
+          .forEach(function(id){ var el = document.getElementById(id); if(el) el.textContent = '00'; });
+        return;
+      }
+
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+
+      /* bar */
+      var bd = document.getElementById('cb-d'); if(bd) bd.textContent = pad(d);
+      var bh = document.getElementById('cb-h'); if(bh) bh.textContent = pad(h);
+      var bm = document.getElementById('cb-m'); if(bm) bm.textContent = pad(m);
+      var bs = document.getElementById('cb-s'); if(bs) bs.textContent = pad(s);
+
+      /* main */
+      var md = document.getElementById('cm-d'); if(md) md.textContent = pad(d);
+      var mh = document.getElementById('cm-h'); if(mh) mh.textContent = pad(h);
+      var mm = document.getElementById('cm-m'); if(mm) mm.textContent = pad(m);
+      var ms = document.getElementById('cm-s'); if(ms) ms.textContent = pad(s);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    /* body padding per urgency bar */
+    window.addEventListener('load', function() {
+      var bar = document.getElementById('mf-urgency-bar');
+      if (bar) document.body.style.paddingTop = bar.offsetHeight + 'px';
+    });
+
+    /* --- GSAP ScrollTrigger --- */
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      document.querySelectorAll('.mf-animate').forEach(function(el) {
+        gsap.fromTo(el,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1, y: 0,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+              onEnter: function() { el.classList.add('is-visible'); }
+            }
+          }
+        );
+      });
+    }
+  </script>
+
+</body>
+</html>
