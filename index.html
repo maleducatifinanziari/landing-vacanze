@@ -648,20 +648,6 @@
 
 <body>
 
-  <!-- URGENCY BAR FISSA -->
-  <div id="mf-urgency-bar">
-    <span>⏳ Offerta disponibile fino a martedì 16 giugno alle 23:59 &mdash;</span>
-    <div class="mf-countdown" id="cd-bar" aria-live="polite">
-      <span class="mf-cd-unit"><span id="cb-d">--</span><small>giorni</small></span>
-      <span class="mf-cd-sep">:</span>
-      <span class="mf-cd-unit"><span id="cb-h">--</span><small>ore</small></span>
-      <span class="mf-cd-sep">:</span>
-      <span class="mf-cd-unit"><span id="cb-m">--</span><small>min</small></span>
-      <span class="mf-cd-sep">:</span>
-      <span class="mf-cd-unit"><span id="cb-s">--</span><small>sec</small></span>
-    </div>
-    <a href="#mf-pricing" id="mf-urgency-cta">Acquista subito &rarr;</a>
-  </div>
 
   <!-- ============================================================
        HERO
@@ -674,7 +660,7 @@
       <a href="#mf-pricing" class="mf-btn mf-btn-large">
         Voglio il Budget delle Vacanze &rarr;
       </a>
-      <span class="mf-hero-sub">Solo 27&euro; &mdash; offerta valida fino al 16 giugno alle 23:59</span>
+      <span class="mf-hero-sub">Solo 47&euro;</span>
     </div>
   </section>
 
@@ -775,9 +761,7 @@
           <li>File Budget Vacanze (versione senza carta di credito) <em style="color:rgba(169,206,232,0.65);font-style:normal;font-size:13px;">— Tuo per sempre</em></li>
           <li>Accesso alle videolezioni per 12 mesi</li>
         </ul>
-        <div class="mf-price-old">47&euro;</div>
-        <div class="mf-price">27&euro;</div>
-        <div class="mf-price-note">Offerta valida fino al 16 giugno alle 23:59</div>
+        <div class="mf-price">47&euro;</div>
         <a href="https://esmerise.com/budgetvacanze/register?p=7208" class="mf-card-btn">
           S&igrave;, voglio il Budget delle Vacanze &rarr;
         </a>
@@ -792,17 +776,7 @@
   <section class="mf-urgenza-finale">
     <div class="mf-container">
       <h2>Quest&rsquo;estate puoi fare la differenza.</h2>
-      <p>L&rsquo;offerta scade martedì 16 giugno alle 23:59. Dopo il prezzo torna a 47&euro;.</p>
-
-      <div class="mf-countdown-finale" id="cd-main" aria-live="polite">
-        <span class="mf-cd-unit"><span id="cm-d">--</span><small>giorni</small></span>
-        <span class="mf-cd-sep">:</span>
-        <span class="mf-cd-unit"><span id="cm-h">--</span><small>ore</small></span>
-        <span class="mf-cd-sep">:</span>
-        <span class="mf-cd-unit"><span id="cm-m">--</span><small>min</small></span>
-        <span class="mf-cd-sep">:</span>
-        <span class="mf-cd-unit"><span id="cm-s">--</span><small>sec</small></span>
-      </div>
+      <p>Pianifica le spese, rispetta il piano e torna a casa senza pensieri.</p>
 
       <a href="#mf-pricing" class="mf-btn mf-btn-large">
         Lo voglio subito &rarr;
@@ -868,48 +842,6 @@
        JAVASCRIPT: Countdown + GSAP
        ============================================================ -->
   <script>
-    /* --- Countdown --- */
-    var deadline = new Date('2026-06-16T23:59:00');
-
-    function pad(n) { return String(n).padStart(2, '0'); }
-
-    function updateCountdown() {
-      var now  = new Date();
-      var diff = deadline - now;
-
-      if (diff <= 0) {
-        ['cb-d','cb-h','cb-m','cb-s','cm-d','cm-h','cm-m','cm-s']
-          .forEach(function(id){ var el = document.getElementById(id); if(el) el.textContent = '00'; });
-        return;
-      }
-
-      var d = Math.floor(diff / 86400000);
-      var h = Math.floor((diff % 86400000) / 3600000);
-      var m = Math.floor((diff % 3600000) / 60000);
-      var s = Math.floor((diff % 60000) / 1000);
-
-      /* bar */
-      var bd = document.getElementById('cb-d'); if(bd) bd.textContent = pad(d);
-      var bh = document.getElementById('cb-h'); if(bh) bh.textContent = pad(h);
-      var bm = document.getElementById('cb-m'); if(bm) bm.textContent = pad(m);
-      var bs = document.getElementById('cb-s'); if(bs) bs.textContent = pad(s);
-
-      /* main */
-      var md = document.getElementById('cm-d'); if(md) md.textContent = pad(d);
-      var mh = document.getElementById('cm-h'); if(mh) mh.textContent = pad(h);
-      var mm = document.getElementById('cm-m'); if(mm) mm.textContent = pad(m);
-      var ms = document.getElementById('cm-s'); if(ms) ms.textContent = pad(s);
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    /* body padding per urgency bar */
-    window.addEventListener('load', function() {
-      var bar = document.getElementById('mf-urgency-bar');
-      if (bar) document.body.style.paddingTop = bar.offsetHeight + 'px';
-    });
-
     /* --- GSAP ScrollTrigger --- */
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
